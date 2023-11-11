@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý công việc</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 5px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        input[type="text"], select {
+            padding: 8px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quản lý công việc</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <span>{{ task['name'] }} - Ưu Tiên: {{ task['priority'] }} - Hạn Cuối: {{ task['due_date'] }} - Danh Mục: {{ task['category'] }}</span>
+                {% if task['attachment'] %}
+                    <span><a href="{{ task['attachment'] }}" target="_blank">Xem Đính Kèm</a></span>
+                {% endif %}
+                <span>
+                    {% if not task['completed'] %}
+                        <a href="{{ url_for('delete_task', task_index=loop.index0) }}">Xóa</a>
+                        <a href="{{ url_for('edit_task', task_index=loop.index0) }}">Chỉnh sửa</a>
+                    {% endif %}
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('add_task') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="attachment" accept=".pdf, .doc, .docx, .txt">
+        <input type="text" name="task" placeholder="Nội dung công việc" required>
+        <select name="priority">
+            <option value="Cao">Cao</option>
+            <option value="Trung bình">Trung bình</option>
+            <option value="Thấp">Thấp</option>
+        </select>
+        <input type="text" name="due_date" placeholder="Ngày hạn cuối" required>
+        <select name="category">
+            <option value="Công Việc">Công Việc</option>
+            <option value="Cá Nhân">C    
+            <option value="Mua Sắm">Mua Sắm</option>
+        </select>
+        <button type="submit">Thêm công việc</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li style="color: {% if 'error' in message.lower() %}red{% else %}green{% endif %};">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
