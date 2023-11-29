@@ -2,8 +2,8 @@ import requests
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 
-TELEGRAM_TOKEN = "6916710635:AAHGPz55VEK59ugt7NVWB4s8wPEsgP-3VN8"
-OPENWEATHERMAP_API_KEY = "fe8d8c65cf345889139d8e545f57819a"
+TELEGRAM_TOKEN = "APLI_KEY" #Thay API TOKEN CỦA BẠN VÀO
+OPENWEATHERMAP_API_KEY = "fe8d8c65cf345889139d8e545f57819a" #CÁI NÀY ĐỂ NGUYÊN CŨNG ĐƯỢC
 
 def start(update: Update, context: CallbackContext) -> None:
     update.message.reply_text("Xin chào! Tôi là bot dự báo thời tiết. Để biết dự báo, sử dụng lệnh /weather.")
